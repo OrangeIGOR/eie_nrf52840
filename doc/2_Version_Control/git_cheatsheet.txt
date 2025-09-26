@@ -1,0 +1,8 @@
+git commit 	- makes new version
+git branch 	- makes a branch of the currently selected commit
+git checkout 	- selects the branch/commit
+git pull	- fetches latest version from remote repo and merges it
+git push 	- pushes selected into remote repo
+git merge	- merges two 'heads' of two branches combining them
+git rebase	- DONT USE PIECE OF SHIT
+git fetch	- grabs latest version from remote repo and 'downloads' it (does not 'install')
