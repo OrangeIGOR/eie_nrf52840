@@ -5,4 +5,7 @@ git pull	- fetches latest version from remote repo and merges it
 git push 	- pushes selected into remote repo
 git merge	- merges two 'heads' of two branches combining them
 git rebase	- DONT USE PIECE OF SHIT
-git fetch	- grabs latest version from remote repo and 'downloads' it (does not 'install')
+git fetch	- grabs latest version from remote repo and 'downloads' it (does not 'install')git add - adds file to branch
+git add - adds file to branch
+git status - tells you what files have been added to branch
+git log - tells you all commits
