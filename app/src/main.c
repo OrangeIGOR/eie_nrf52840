@@ -37,27 +37,44 @@ int led0_count = 0;
 int led1_count = 0;
 int led2_count = 0;
 int led3_count = 0;
-
+const int t_scale = 1;
+gpio_pin_set_dt(&led0, 0);
+gpio_pin_set_dt(&led1, 0);
+gpio_pin_set_dt(&led2, 0);
+gpio_pin_set_dt(&led3, 1);
 
   while(1) {
-    if(led0_count < 1000) {
-        led0_count += 1;
-      }
-      else {
-        gpio_pin_toggle_dt(&led0);
-        gpio_pin_toggle_dt(&led1);
-        gpio_pin_toggle_dt(&led2);
-        led0_count = 0;
-      }
-      
-    if(led3_count < 500) {
-        led3_count += 1;
-      }
-      else {
-        gpio_pin_toggle_dt(&led3);
-        led3_count = 0;
-      }
-      
+
+    switch (led0_count) {
+        case 250 * t_scale:
+          gpio_pin_toggle_dt(&led3);
+          gpio_pin_toggle_dt(&led0);
+          led0_count++;
+            break; 
+
+        case 500 * t_scale:
+          gpio_pin_toggle_dt(&led0);
+          gpio_pin_toggle_dt(&led1);
+          led0_count++;
+
+        case 750 * t_scale:
+          gpio_pin_toggle_dt(&led1);
+          gpio_pin_toggle_dt(&led2);
+          led0_count++;
+            break;
+
+        case 1000 * t_scale:
+          gpio_pin_set_dt(&led0, 0);
+          gpio_pin_set_dt(&led1, 0);
+          gpio_pin_set_dt(&led2, 0);
+          gpio_pin_set_dt(&led3, 1);
+          led0_count=0;
+            break;
+
+        default:
+          led0_count++;
+            break;
+    }
     k_msleep(1);
   }
 	return 0;
