@@ -24,36 +24,51 @@ int main(void) {
   if (0 > LED_init()) {
     return 0;
   }
-  uint8_t led_mask = 0;
+  uint32_t password_mask = 0;
+  uint32_t password_key = 0x00421421;
+  uint8_t  num_in = 0;
+  LED_set(LED0, LED_ON);
   while(1) {
-    if((led_mask & 0b0001) > 0){
-      LED_set(LED0, LED_ON);}
-    else if((led_mask & 0b0001) == 0)
-      LED_set(LED0, LED_OFF);
-      
-    if((led_mask & 0b0010) > 0){
-      LED_set(LED1, LED_ON);}
-    else if((led_mask & 0b0010) == 0)
-      LED_set(LED1, LED_OFF);
 
-    if((led_mask & 0b0100) > 0){
-      LED_set(LED2, LED_ON);}
-    else if((led_mask & 0b0100) == 0)
-      LED_set(LED2, LED_OFF);
-
-    if((led_mask & 0b1000) > 0){
-      LED_set(LED3, LED_ON);}
-    else if((led_mask & 0b1000) == 0)
-      LED_set(LED3, LED_OFF);
-
-    if(BTN_check_clear_pressed(BTN0)){
-      led_mask++;
-      printk("\n%d\n", led_mask);
+    if(BTN_check_clear_pressed(BTN0))
+    {
+      password_mask = password_mask | (0x1 << 4*num_in);
+      num_in++;
     }
-      
+    if(BTN_check_clear_pressed(BTN1))
+    {
+      password_mask = password_mask | (0x2 << 4*num_in);
+      num_in++;
+    }
+    if(BTN_check_clear_pressed(BTN2))
+    {
+      password_mask = password_mask | (0x4 << 4*num_in);
+      num_in++;
+    }
+    if(num_in > 8){
+      printk("Incorrect!\n");
+      num_in = 0;
+      password_mask = 0;
+    }
 
-    if(led_mask == 16)
-      led_mask = 0;
+    if(BTN_check_clear_pressed(BTN3))
+    {
+      if(password_mask == password_key){
+        printk("Correct!\n");
+        LED_set(LED0, LED_OFF);
+        while(0 == BTN_check_clear_pressed(BTN0) ||
+                    BTN_check_clear_pressed(BTN1) ||
+                    BTN_check_clear_pressed(BTN2) ||
+                    BTN_check_clear_pressed(BTN3)){}
+        LED_set(LED0, LED_ON);
+        printk("LOCKED!\n");
+      }
+      else{
+        printk("Incorrect!\n");
+      }
+      num_in = 0;
+      password_mask = 0;
+    }
 
 
   }
